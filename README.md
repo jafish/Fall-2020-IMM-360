@@ -1,5 +1,7 @@
 # IMM 360, Games 1: Design and Architecture, Fall 2020
 
+Here you'll find links to the weekly demo files and challenge solutions from our class meetings.
+
 ## Week 1
 
 - [Week 1 Demo (Unity project zip file)](https://github.com/jafish/Fall-2020-IMM-360/blob/main/Week-1/Week-1-Demo.zip)
