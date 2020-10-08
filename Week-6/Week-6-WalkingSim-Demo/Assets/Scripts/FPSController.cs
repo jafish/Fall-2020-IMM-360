@@ -10,6 +10,7 @@ public class FPSController : MonoBehaviour
     public CharacterController playerCharacterController;
     public float sensitivity;
     public float speed;
+    public float sprintMultiplier;
     float pitch = 0;
     float yaw = 0;
 
@@ -40,8 +41,14 @@ public class FPSController : MonoBehaviour
 
     void MovePlayer()
     {
-        float h = Input.GetAxis("Horizontal") * Time.deltaTime * speed;
-        float v = Input.GetAxis("Vertical") * Time.deltaTime * speed;
+        float sprint = 1;
+        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+        {
+            sprint = sprintMultiplier;
+        }
+
+        float h = Input.GetAxis("Horizontal") * Time.deltaTime * speed * sprint;
+        float v = Input.GetAxis("Vertical") * Time.deltaTime * speed * sprint;
 
         // Adding horizontal, vertical axes and "gravity"
         Vector3 vel = playerTransform.forward * v + playerTransform.right * h + Vector3.down;
