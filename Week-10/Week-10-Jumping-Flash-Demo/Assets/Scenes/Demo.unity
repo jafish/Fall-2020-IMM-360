@@ -1447,6 +1447,7 @@ MonoBehaviour:
   rotationSpeed: 2.5
   gravity: 0.25
   jumpForce: 12
+  fpsCamera: {fileID: 963194225}
 --- !u!1001 &1912020160
 PrefabInstance:
   m_ObjectHideFlags: 0

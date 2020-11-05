@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     // that is attached to the GameObject that this script is attached to
     // How do I know that? Because in the Start method, I assign it using GetComponent
     private CharacterController cc;
+    
     [SerializeField] private float movementSpeed;
     [SerializeField] private float rotationSpeed;
     [SerializeField] private float gravity;
@@ -16,8 +17,11 @@ public class PlayerController : MonoBehaviour
     private float verticalVelocity;
     
     // Camera Rotation
+    public GameObject fpsCamera;
     private const float minRotation = 0;
     private const float maxRotation = 90;
+    private float currentRotation = minRotation;
+    private int rotationState = 0;
     
     void Start()
     {
@@ -42,6 +46,16 @@ public class PlayerController : MonoBehaviour
         else
         {
             jumpsLeft = 3;
+            if (rotationState == 2)
+            {
+                currentRotation -= rotationSpeed;
+                if (currentRotation < 0)
+                {
+                    currentRotation = 0;
+                    rotationState = 0;
+                }
+                fpsCamera.transform.Rotate(-transform.right, rotationSpeed);
+            }
         }
 
         // Jump 
@@ -51,7 +65,7 @@ public class PlayerController : MonoBehaviour
             if (jumpsLeft == 2)
             {
                 // Start that rotation
-                
+                rotationState = 1;
             }
             jumpsLeft--;
             verticalVelocity = jumpForce;
@@ -68,5 +82,16 @@ public class PlayerController : MonoBehaviour
         // Rotation happens around an axis (in this case, up relative to the player) and by
         // a certain amount (for now, using the value of the Horizontal axis
         transform.Rotate(transform.up, Input.GetAxis("Horizontal") * rotationSpeed);
+
+        if (rotationState == 1)
+        {
+            currentRotation += rotationSpeed;
+            if (currentRotation > 90)
+            {
+                currentRotation = 90;
+                rotationState = 2;
+            }
+            fpsCamera.transform.Rotate(transform.right, rotationSpeed);
+        } 
     }
 }
