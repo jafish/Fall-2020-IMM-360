@@ -9,7 +9,10 @@ public class Move : MonoBehaviour
     private Vector3 direction;
     private Vector3 homePosition;
     public Vector3 lastCheckpointPosition;
+    public GameObject isoCamera, thirdPersonCamera;
 
+    private bool isoCameraEnabled;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -17,6 +20,7 @@ public class Move : MonoBehaviour
         direction = Vector3.zero;
         homePosition = transform.position;
         lastCheckpointPosition = homePosition;
+        isoCameraEnabled = true;
     }
 
     // Update is called once per frame
@@ -26,7 +30,15 @@ public class Move : MonoBehaviour
         float h = Input.GetAxis("Horizontal") * speed;
         float v = Input.GetAxis("Vertical") * speed;
         direction = new Vector3(h, 0, v);
-        direction = Quaternion.Euler(0, 45, 0) * direction;
+
+        if (isoCameraEnabled)
+        {
+            direction = Quaternion.Euler(0, 45, 0) * direction;
+        }
+        else
+        {
+            direction = Quaternion.Euler(0, -135, 0) * direction;
+        }
 
         if (transform.position.y < -4)
         {
@@ -34,6 +46,14 @@ public class Move : MonoBehaviour
             Debug.Log("You lost");
 
             Reset();
+        }
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            // Switch camera
+            isoCameraEnabled = !isoCameraEnabled;
+            isoCamera.SetActive(isoCameraEnabled);
+            thirdPersonCamera.SetActive(!isoCameraEnabled);
         }
     }
 
@@ -60,4 +80,25 @@ public class Move : MonoBehaviour
         rb.rotation = Quaternion.identity;
         // TODO how to just zero out the whole rb
     }
+
+    void MoveIsometric()
+    {
+        // Handle any inputs in the Update method
+        float h = Input.GetAxis("Horizontal") * speed;
+        float v = Input.GetAxis("Vertical") * speed;
+
+        if (transform.position.y < -4)
+        {
+            // Quick Game Reset
+            Debug.Log("You lost");
+
+            Reset();
+        }
+    }
+
+    void MoveThirdPerson()
+    {
+        
+    }
+    
 }
